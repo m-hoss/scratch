@@ -14,19 +14,6 @@ import (
 	secretmanagerpb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
 )
 
-// Variables used for command line parameters
-//var (
-//	Token string
-//)
-
-//func init() {
-
-//	flag.StringVar(&Token, "t", "", "Bot Token")
-//	flag.Parse()
-//}
-
-// const Token string = "ODY4Njg1MTk2OTk4ODc3MjI1.YPzQIg.3yPfIg9xtDwmu6tfgmE-bNmmf5E"
-
 func handler(w http.ResponseWriter, r *http.Request) {
 	name := ""
 	if name == "" {
