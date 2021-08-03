@@ -147,6 +147,10 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		s.ChannelMessageSend(m.ChannelID, "np. love you")
 	}
 
+	if m.Content == "Contact on!" {
+		s.ChannelMessageSend(m.ChannelID, "hey @shibi")
+	}
+
 	if m.Content == "List on!" {
 		s.ChannelMessageSend(m.ChannelID, "<------ TODO LIST for shelny-------->\n    #1 jack of \n <-----end list ------>")
 	}
