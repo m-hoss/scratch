@@ -1,4 +1,4 @@
-module example.com/gobot.go
+module github.com/imhoss/scratch
 
 go 1.16
 

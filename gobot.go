@@ -64,10 +64,6 @@ func accessSecretVersion() (string, error) {
 		return name, fmt.Errorf("failed to access secret version: %v", err)
 	}
 
-	// WARNING: Do not print the secret in a production environment - this snippet
-	// is showing how to access the secret material.
-	// fmt.Fprintf(w, "Plaintext: %s\n", string(result.Payload.Data))
-
 	secret := string(result.Payload.Data)
 	return secret, nil
 }
