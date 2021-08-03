@@ -151,7 +151,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		s.ChannelMessageSend(m.ChannelID, "np. love you")
 	}
 
-	if (m.Content == "Contact on!") && (m.Author.ID == 707723062111371355) {
+	if (m.Content == "Contact on!") && (m.Author.ID == "707723062111371355") {
 		s.ChannelMessageSend(m.ChannelID, "hey @shibi#2848")
 	} else if m.Content == "Contact on!" {
 		s.ChannelMessageSend(m.ChannelID, "hey @rodeo#5783")
