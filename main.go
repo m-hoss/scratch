@@ -15,11 +15,10 @@ import (
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	name := ""
-	if name == "" {
-		name = "World"
-	}
-	fmt.Fprintf(w, "Hello %s!\n", name)
+	// Don't know if this should really do something
+	// We keep it open to satisfy Cloud Run
+	// I'd like to be able to use it to clear up old revisions
+	// but i do not know how to do that except manually
 }
 
 func defaultServer() {
@@ -42,6 +41,8 @@ func defaultServer() {
 
 //var BotID string
 func accessSecretVersion() (string, error) {
+	project_name := os.Getenv("PROJECT_ID")
+	fmt.Println(project_name)
 	// name := "projects/my-project/secrets/my-secret/versions/5"
 	name := "projects/scratch-project-321714/secrets/bot-token/versions/latest"
 
@@ -68,28 +69,7 @@ func accessSecretVersion() (string, error) {
 	return secret, nil
 }
 
-func main() {
-	// log.Print("starting server...")
-	// http.HandleFunc("/", handler)
-
-	// // Determine port for HTTP service.
-	// port := os.Getenv("PORT")
-	// if port == "" {
-	// 	port = "8080"
-	// 	log.Printf("defaulting to port %s", port)
-	// }
-
-	// // Start HTTP server.
-	// log.Printf("listening on port %s", port)
-	// if err := http.ListenAndServe(":"+port, nil); err != nil {
-	// 	log.Fatal(err)
-	// }
-	go defaultServer()
-
-	// GCP project in which to store secrets in Secret Manager.
-	// Create the client.
-	Token, _ := accessSecretVersion()
-	// fmt.Println(Token)
+func botSession(Token string) {
 	// Create a new Discord session using the provided bot token.
 	dg, err := discordgo.New("Bot " + Token)
 	if err != nil {
@@ -109,15 +89,13 @@ func main() {
 		fmt.Println("error opening connection,", err)
 		return
 	}
+	defer dg.Close()
 
 	// Wait here until CTRL-C or other term signal is received.
 	fmt.Println("Bot is now running.  Press CTRL-C to exit.")
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 	<-sc
-
-	// Cleanly close down the Discord session.
-	dg.Close()
 }
 
 // This function will be called (due to AddHandler above) every time a new
@@ -128,23 +106,6 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	// This isn't required in this specific example but it's a good practice.
 	if m.Author.ID == s.State.User.ID {
 		return
-	}
-	// If the message is "ping" reply with "Pong!"
-	if m.Content == "author test" {
-		s.ChannelMessageSend(m.ChannelID, m.Author.ID)
-	}
-
-	if m.Content == "ping" {
-		s.ChannelMessageSend(m.ChannelID, "dnnn dnnnnnn dnnnnnnnnnnn")
-	}
-
-	if m.Content == "test" {
-		s.ChannelMessageSend(m.ChannelID, "thanks")
-	}
-
-	// If the message is "pong" reply with "Ping!"
-	if m.Content == "pong" {
-		s.ChannelMessageSend(m.ChannelID, "o7")
 	}
 
 	if m.Content == "thanks" {
@@ -157,7 +118,20 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		s.ChannelMessageSend(m.ChannelID, "hey @rodeo#5783")
 	}
 
+	if m.Content == "gm" {
+		s.ChannelMessageSend(m.ChannelID, "gm")
+	}
+
 	if m.Content == "List on!" {
 		s.ChannelMessageSend(m.ChannelID, "<------ TODO LIST for shelny-------->\n    #1 jack of \n <-----end list ------>")
 	}
+}
+
+func main() {
+	Token, _ := accessSecretVersion()
+
+	go defaultServer()
+
+	botSession(Token)
+
 }
