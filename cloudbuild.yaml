@@ -1,3 +1,11 @@
+# For discord bot, tag seems to be necessary. When not using tags we had
+# Issue where old revision was still running the bot so we were getting
+# duplicated messages. Perhaps this could be solved in the bot's code
+# but using a tag, then overtaking the tag with the latest revision
+# seems to have solved this
+# Maybe we should add --min-instances MIN-VALUE in the deploy step
+# even though we already seem to have set that in the original deployment
+# so it continues to hold?
 steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'us.gcr.io/scratch-project-321714/scratch/scratchbot', '.']
