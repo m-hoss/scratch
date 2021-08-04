@@ -1,0 +1,12 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'us.gcr.io/scratch-project-321714/scratch/scratchbot', '.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'us.gcr.io/scratch-project-321714/scratch/scratchbot']
+- name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+  entrypoint: gcloud
+  args: ['run', 'deploy', 'scratchbot', '--image', 
+         'gcr.io/scratch-project-321714/scratch/scratchbot', '--region',
+         'us-east1', '--platform', 'managed', '--tag', 'prod']
+images: 
+- 'gcr.io/scratch-project-321714/scratch/scratchbot'
