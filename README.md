@@ -5,4 +5,3 @@ since bot doesn't rely on incoming http traffic, currently there is an issue wit
 
 current issue is when new code is pushed and new build is deployed, existing revisions are not removed but reduced to 0% traffic. but since bot doesn't rely on traffic, multiple instances of bot will be running. currently only know how to solve this with manual revision deletion which is not ideal.
 
-actually, maybe that's not the problem. 
